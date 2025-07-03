@@ -3,11 +3,11 @@ import { LRUCache } from 'lru-cache'
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js'
 import type { Params$Resource$Cse$List, Schema$Search } from './cse.types.js'
 
-if (!import.meta.env.GOOGLE_API_KEY) {
+if (!process.env.GOOGLE_API_KEY) {
   throw new Error('Missing required environment variable: GOOGLE_API_KEY')
 }
 
-if (!import.meta.env.GOOGLE_SEARCH_ENGINE_ID) {
+if (!process.env.GOOGLE_SEARCH_ENGINE_ID) {
   throw new Error(
     'Missing required environment variable: GOOGLE_SEARCH_ENGINE_ID'
   )
@@ -47,8 +47,8 @@ export default async function search({
       q,
       num,
       start,
-      key: import.meta.env.GOOGLE_API_KEY,
-      cx: import.meta.env.GOOGLE_SEARCH_ENGINE_ID
+      key: process.env.GOOGLE_API_KEY,
+      cx: process.env.GOOGLE_SEARCH_ENGINE_ID
     } as Params$Resource$Cse$List
   )
 
