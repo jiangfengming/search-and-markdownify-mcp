@@ -1,6 +1,6 @@
 {
   "name": "search-and-markdownify-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for Google searches and extracting clean markdown from webpages.",
   "license": "MIT",
   "type": "module",
