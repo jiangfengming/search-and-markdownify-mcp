@@ -46,23 +46,45 @@ async function webpageToMarkdown(url: string): Promise<string> {
       throw new Error(`${response.statusText}`)
     }
 
-    const html = await response.text()
-    const dom = new JSDOM(html)
-    dom.window.document
-      .querySelectorAll('[data-nosnippet]')
-      .forEach(node => node.remove())
-    dom.window.document
-      .querySelectorAll('.overflow-hidden')
-      .forEach(el => el.classList.remove('overflow-hidden'))
-    const reader = new Readability(dom.window.document, {
-      // @ts-ignore missing definition
-      linkDensityModifier: 1
-    })
-    const article = reader.parse()
-    const markdown = turndownService.turndown(article?.content || '')
+    const markdown = htmlToMarkdown(await response.text())
     cache.set(url, markdown)
     return markdown
   } catch (e) {
     return `Failed to fetch ${url}. ${e}`
   }
+}
+
+export function htmlToMarkdown(html: string) {
+  const dom = new JSDOM(html)
+  
+  dom.window.document
+    .querySelectorAll('[data-nosnippet]')
+    .forEach(node => node.remove())
+
+  dom.window.document
+    .querySelectorAll('.overflow-hidden')
+    .forEach(el => el.classList.remove('overflow-hidden'))
+
+  dom.window.document
+    .querySelectorAll('code:has(> *)')
+    .forEach(node => {
+      [...node.childNodes].forEach(child => {
+        if (child.nodeType !== dom.window.Node.ELEMENT_NODE) {
+          if (child.nodeType !== dom.window.Node.TEXT_NODE ||
+            child.previousSibling?.nodeType !== dom.window.Node.ELEMENT_NODE ||
+            child.nextSibling?.nodeType !== dom.window.Node.ELEMENT_NODE) {
+              node.removeChild(child)
+          } else {
+            child.nodeValue = '\n'
+          }
+        }
+      })
+    })
+
+  const reader = new Readability(dom.window.document, {
+    // @ts-ignore missing definition
+    linkDensityModifier: 1
+  })
+  const article = reader.parse()
+  return turndownService.turndown(article?.content || '')
 }
