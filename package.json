@@ -15,6 +15,11 @@
   "bin": {
     "search-and-markdownify-mcp": "dist/index.js"
   },
+  "keywords": [
+    "mcp",
+    "google-search",
+    "webpages-to-markdown"
+  ],
   "repository": {
     "type": "git",
     "url": "jiangfengming/search-and-markdownify-mcp"
