@@ -56,7 +56,7 @@ async function webpageToMarkdown(url: string): Promise<string> {
 
 export function htmlToMarkdown(html: string) {
   const dom = new JSDOM(html)
-  
+
   dom.window.document
     .querySelectorAll('[data-nosnippet]')
     .forEach(node => node.remove())
@@ -65,21 +65,30 @@ export function htmlToMarkdown(html: string) {
     .querySelectorAll('.overflow-hidden')
     .forEach(el => el.classList.remove('overflow-hidden'))
 
-  dom.window.document
-    .querySelectorAll('code:has(> *)')
-    .forEach(node => {
-      [...node.childNodes].forEach(child => {
-        if (child.nodeType !== dom.window.Node.ELEMENT_NODE) {
-          if (child.nodeType !== dom.window.Node.TEXT_NODE ||
-            child.previousSibling?.nodeType !== dom.window.Node.ELEMENT_NODE ||
-            child.nextSibling?.nodeType !== dom.window.Node.ELEMENT_NODE) {
-              node.removeChild(child)
-          } else {
-            child.nodeValue = '\n'
-          }
+  dom.window.document.querySelectorAll('code:has(> *)').forEach(node => {
+    for (const child of node.childNodes) {
+      if (
+        child.nodeType === dom.window.Node.TEXT_NODE &&
+        child.textContent?.trim()
+      ) {
+        return
+      }
+    }
+
+    ;[...node.childNodes].forEach(child => {
+      if (child.nodeType !== dom.window.Node.ELEMENT_NODE) {
+        if (
+          child.nodeType !== dom.window.Node.TEXT_NODE ||
+          child.previousSibling?.nodeType !== dom.window.Node.ELEMENT_NODE ||
+          child.nextSibling?.nodeType !== dom.window.Node.ELEMENT_NODE
+        ) {
+          node.removeChild(child)
+        } else {
+          child.nodeValue = '\n'
         }
-      })
+      }
     })
+  })
 
   const reader = new Readability(dom.window.document, {
     // @ts-ignore missing definition
