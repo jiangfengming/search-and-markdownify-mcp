@@ -51,6 +51,9 @@ async function webpageToMarkdown(url: string): Promise<string> {
     dom.window.document
       .querySelectorAll('[data-nosnippet]')
       .forEach(node => node.remove())
+    dom.window.document
+      .querySelectorAll('.overflow-hidden')
+      .forEach(el => el.classList.remove('overflow-hidden'))
     const reader = new Readability(dom.window.document, {
       // @ts-ignore missing definition
       linkDensityModifier: 1
