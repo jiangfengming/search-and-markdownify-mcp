@@ -15,6 +15,10 @@
   "bin": {
     "search-and-markdownify-mcp": "dist/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "jiangfengming/search-and-markdownify-mcp"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.13.3",
     "@mozilla/readability": "^0.6.0",
