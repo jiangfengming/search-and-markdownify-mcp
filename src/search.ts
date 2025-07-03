@@ -1,7 +1,7 @@
 import { teleman } from 'teleman'
 import { LRUCache } from 'lru-cache'
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js'
-import type { Params$Resource$Cse$List, Schema$Search } from './cse.types'
+import type { Params$Resource$Cse$List, Schema$Search } from './cse.types.js'
 
 if (!import.meta.env.GOOGLE_API_KEY) {
   throw new Error('Missing required environment variable: GOOGLE_API_KEY')

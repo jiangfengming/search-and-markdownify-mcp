@@ -1,8 +1,9 @@
+#!/usr/bin/env node
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod'
-import search from './search'
-import webpagesToMarkdown from './webpagesToMarkdown'
+import search from './search.js'
+import webpagesToMarkdown from './webpagesToMarkdown.js'
 import pkgInfo from '../package.json' with { type: 'json' }
 
 const server = new McpServer({
